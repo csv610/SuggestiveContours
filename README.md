@@ -46,9 +46,9 @@ Silhouette only:          With Suggestive Contours:
 ## Prerequisites
 
 RTSC requires the following libraries:
-- [trimesh2](http://www.cs.princeton.edu/gfx/proj/trimesh2/): A library for 3D triangle meshes.
+- **trimesh2**: Bundled in `trimesh2/` (originally from Princeton)
 - **OpenGL** and **GLUT**: For 3D rendering and window management.
-- **GLUI**: For the graphical user interface (distributed with trimesh2).
+- **GLUI**: Bundled with trimesh2
 
 ## Build Instructions
 
