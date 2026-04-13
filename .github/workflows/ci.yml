@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+env:
+  CMAKE_CXX_STANDARD: 20
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        compiler: [clang, gcc]
+        include:
+          - os: ubuntu-latest
+            compiler: gcc
+          - os: macos-latest
+            compiler: clang
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set compiler (macOS)
+      if: runner.os == 'macOS'
+      run: echo "CXX=clang++" >> $GITHUB_ENV
+
+    - name: Set compiler (Ubuntu)
+      if: runner.os == 'Linux'
+      run: echo "CXX=g++" >> $GITHUB_ENV
+
+    - name: Install dependencies (Ubuntu)
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y freeglut3-dev libgl1-mesa-dev libglu1-mesa-dev xvfb
+
+    - name: Configure CMake
+      run: cmake -B build -S . -DCMAKE_BUILD_TYPE=Release
+
+    - name: Build
+      run: cmake --build build -j$(nproc)
+
+    - name: Test (Ubuntu)
+      if: runner.os == 'Linux'
+      run: |
+        cd build
+        xvfb-run -a 99 python3 ../tests/test_basic.py
+
+    - name: Test (macOS)
+      if: runner.os == 'macOS'
+      run: |
+        cd build
+        python3 ../tests/test_basic.py
+
+  style-check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install clang-format
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y clang-format
+
+    - name: Check code style
+      run: |
+        find src -name '*.cc' -o -name '*.h' | xargs clang-format --style=google --dry-run -Werror
