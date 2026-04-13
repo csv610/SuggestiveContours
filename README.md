@@ -130,6 +130,25 @@ GitHub Actions runs on every push:
 - Code style check with clang-format
 - Zero compiler warnings
 
+## Modern Context
+
+While RTSC (2004) is older, it remains relevant and actively cited:
+
+- **Baseline**: New papers (Neural Contours 2019, Diff3DS 2025) compare against it
+- **Educational**: Best entry point for understanding geometric line drawing
+- **Lightweight**: No ML framework - runs anywhere
+- **Precise**: Full control over thresholds
+
+| Modern Work | Builds On |
+|------------|----------|
+| Neural Contours (2019) | Uses rtsc as geometric branch |
+| Diff3DS (ICLR 2025) | Differentiable rendering from suggestions |
+| Deep Sketch Vectorization (2024) | Raster → vector via neural networks |
+
+For modern ML-based approaches, see:
+- [Neural Contours](https://github.com/DifanLiu/NeuralContours) (2019)
+- [Diff3DS](https://arxiv.org/) (ICLR 2025)
+
 ## Key Algorithms
 
 The features in RTSC are based on several seminal papers in computer graphics:
