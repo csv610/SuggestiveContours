@@ -147,7 +147,7 @@ While RTSC (2004) is older, it remains relevant and actively cited:
 
 For modern ML-based approaches, see:
 - [Neural Contours](https://github.com/DifanLiu/NeuralContours) (2019)
-- [Diff3DS](https://arxiv.org/) (ICLR 2025)
+- [Diff3DS](https://arxiv.org/abs/2501.04656) (ICLR 2025)
 
 ## Key Algorithms
 
