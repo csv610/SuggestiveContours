@@ -78,7 +78,7 @@ The features in RTSC are based on several seminal papers in computer graphics:
 
 ## License
 
-This software is distributed under the GNU General Public License (GPL). See the `COPYING` file for details.
+This software is distributed under the GNU General Public License (GPL). See the `LICENSE` file for details.
 
 ## Authors
 
