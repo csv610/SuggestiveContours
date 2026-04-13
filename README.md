@@ -58,6 +58,30 @@ Run RTSC by providing a 3D mesh file (PLY, OBJ, OFF, etc.):
 - **Space Bar:** Reset view.
 - **'q' / 'Esc':** Quit.
 
+### Keyboard Shortcuts
+| Key | Action |
+|-----|--------|
+| `c` | Toggle mesh colors |
+| `C` | Filter curvature |
+| `d` | Toggle occluding contours |
+| `D` | Toggle suggestive contours |
+| `s` | Filter normals |
+| `S` | Filter mesh (smoothing) |
+| `r` | Toggle principal highlights |
+| `R` | Toggle ridges/valleys test |
+| `a` | Toggle asymptotic lines |
+| `A` | Toggle apparent ridges |
+| `n` | Toggle normals rendering |
+| `f` | Toggle faded lines |
+| `l` | Cycle lighting style |
+| `u` | Cycle color style |
+| `t` | Toggle texture |
+| `+` / `-` | Increase/decrease isolines |
+| `z` / `Z` | Decrease/increase FOV |
+| `x` | Save camera position |
+| `i` | Dump image to file |
+| `/` | Toggle dual viewport mode |
+
 Click the **Options** button in the UI to toggle different line types and adjust thresholds.
 
 ## Testing
