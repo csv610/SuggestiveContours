@@ -1,10 +1,8 @@
 # RTSC: Real-Time Suggestive Contour Viewer
 
-**Note: This is a clone of the original [RTSC](http://www.cs.princeton.edu/gfx/proj/sugcon/) project. All credit for the algorithms and the original codebase goes to the original authors.**
+**Note: This is a fork of the original [RTSC](http://www.cs.princeton.edu/gfx/proj/sugcon/) project with modern CMake build system and Apple Silicon support. All credit for the algorithms goes to the original authors.**
 
 RTSC is a high-performance interactive viewer for 3D meshes that implements real-time algorithms for suggestive contours, ridges, valleys, and other expressive line drawings.
-
-![Suggestive Contours](http://www.cs.princeton.edu/gfx/proj/sugcon/img/camel_sc.jpg)
 
 ## Features
 
