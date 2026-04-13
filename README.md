@@ -1,6 +1,6 @@
 # RTSC: Real-Time Suggestive Contour Viewer
 
-**Note: This is a clone of the original [RTSC](http://www.cs.princeton.edu/gfx/proj/sugcon/) project. The main addition in this repository is a modern CMake-based build system. All credit for the algorithms and the original codebase goes to the original authors.**
+**Note: This is a clone of the original [RTSC](http://www.cs.princeton.edu/gfx/proj/sugcon/) project. All credit for the algorithms and the original codebase goes to the original authors.**
 
 RTSC is a high-performance interactive viewer for 3D meshes that implements real-time algorithms for suggestive contours, ridges, valleys, and other expressive line drawings.
 
@@ -29,13 +29,15 @@ RTSC requires the following libraries:
 RTSC uses CMake for cross-platform builds.
 
 ```bash
-mkdir build
-cd build
-cmake ..
-make
+git clone https://github.com/csv610/SuggestiveContours.git
+cd SuggestiveContours
+mkdir build && cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
+cmake --build . -j$(nproc)
 ```
 
 ### Configuration
+
 By default, the build system expects `trimesh2` to be located at `../trimesh2`. You can override this by setting the `TRIMESHDIR` cache variable:
 ```bash
 cmake -DTRIMESHDIR=/path/to/trimesh2 ..
@@ -60,13 +62,23 @@ Click the **Options** button in the UI to toggle different line types and adjust
 
 ## Testing
 
-A basic test script is provided in the `tests` directory. To run it, ensure the project is built and then execute:
+A basic test script is provided in the `tests` directory:
 
 ```bash
 python3 tests/test_basic.py
 ```
 
-This script generates a simple mesh and verifies that RTSC can load it and exit correctly.
+## CI Status
+
+| Platform | Status |
+|----------|--------|
+| macOS (clang, gcc) | ✅ |
+| Ubuntu (clang, gcc) | ✅ |
+
+GitHub Actions runs on every push:
+- Build verification on macOS and Ubuntu
+- Code style check with clang-format
+- Zero compiler warnings
 
 ## Key Algorithms
 
