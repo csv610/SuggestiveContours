@@ -17,6 +17,32 @@ RTSC supports a wide variety of line drawing techniques:
 - **Mesh Processing:** Real-time smoothing (geometry, normals, curvatures) and Loop subdivision.
 - **Advanced Shading:** Lambertian, Gooch, Toon, and Hemisphere lighting models.
 
+## Why Line Drawings Matter
+
+No single line type captures shape completely. Each technique reveals different geometric features:
+
+| Technique | What It Shows | Why It Matters |
+|-----------|--------------|---------------|
+| **Contours** | Where surface turns 90° from viewer | Defines silhouette - the most fundamental shape cue |
+| **Suggestive Contours** | Where contours *would* appear with small view change | Reveals curvature even when contours are hidden |
+| **Ridges** | Local maxima of principal curvature | Captures "crease" lines - like folded paper |
+| **Valleys** | Local minima of principal curvature | The valleys/creases between ridges |
+| **Apparent Ridges** | View-dependent ridges | Always visible parts that look like ridges |
+| **Principal Highlights** | Max/min of reflected curvature | Shows where light reflects - critical for material appearance |
+| **Asymptotic Lines** | Directions of maximum/minimum curvature | Reveals surface anisotropy |
+
+**Key insight:** Combining multiple line types gives complete shape understanding. A technique like suggestive contours can reveal shape that contours alone miss:
+
+```
+Silhouette only:          With Suggestive Contours:
+                                        
+   ____                  ____
+  /    \                /    \
+ /      \      →       .·´    `·.
+ \      /                `·.    ·´
+  \____/                  \____
+```
+
 ## Prerequisites
 
 RTSC requires the following libraries:
