@@ -1089,7 +1089,7 @@ static inline void normalize(Vec<D,T> &v)
 
 // Returns a normalized vector while leaving the original alone
 template <size_t D, class T>
-[[nodiscard]] static inline Vec<D,T> normalized(const Vec<D,T> &v)
+static inline Vec<D,T> normalized(const Vec<D,T> &v)
 {
 	Vec<D,T> w(v);
 	normalize(w);

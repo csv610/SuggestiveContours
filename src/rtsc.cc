@@ -24,6 +24,11 @@ Real-time suggestive contours - these days, it also draws many other lines.
 #include "GLCamera.h"
 #include "timestamp.h"
 #include "GL/glui.h"
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
 
 #ifndef DARWIN
 // #include <GL/glext.h>
@@ -2299,26 +2304,44 @@ void usage(const char *myname)
 	fprintf(stderr, "    l             Cycle lighting styles\n");
 	fprintf(stderr, "    n             Toggle normals\n");
 	fprintf(stderr, "    r/v           Toggle principal highlights (ridges/valleys)\n");
-	fprintf(stderr, "    Ctrl-r/v      Toggle ridges/valleys\n");
-	fprintf(stderr, "    R             Toggle trim RV\n");
+	fprintf(stderr, "    Ctrl-r/v      Toggle geometric ridges/valleys\n");
+	fprintf(stderr, "    R             Toggle trimming of ridges and valleys\n");
 	fprintf(stderr, "    s/S           Smooth normals / smooth mesh\n");
 	fprintf(stderr, "    t/T           Toggle textures / trim suggestive contours\n");
 	fprintf(stderr, "    u             Cycle color styles\n");
 	fprintf(stderr, "    V, Ctrl-s     Subdivide mesh\n");
-	fprintf(stderr, "    w/W           Toggle view-dependent / DwKr=thresh lines\n");
+	fprintf(stderr, "    w/W           Toggle projected view vectors / DwKr=thresh lines\n");
 	fprintf(stderr, "    x/X           Save transformation / smooth dcurv\n");
 	fprintf(stderr, "    z/Z           Zoom in/out\n");
 	fprintf(stderr, "    +/-           Increase/decrease number of isophotes\n");
-	fprintf(stderr, "    1/2           Toggle principal directions 1/2\n");
+	fprintf(stderr, "    1/2           Toggle 1st/2nd principal directions (max/min curvature)\n");
 	fprintf(stderr, "    7/8           Decrease/increase RV threshold\n");
 	fprintf(stderr, "    9/0           Decrease/increase SC threshold\n");
 	fprintf(stderr, "    q/Q, ESC      Exit\n");
+	fprintf(stderr, "  Buttons:\n");
+	fprintf(stderr, "    Smooth Mesh      Apply smoothing to the mesh geometry\n");
+	fprintf(stderr, "    Smooth Normals   Smooth the vertex normals\n");
+	fprintf(stderr, "    Smooth Curv      Smooth the principal curvatures\n");
+	fprintf(stderr, "    Smooth DCurv     Smooth the derivatives of curvature\n");
+	fprintf(stderr, "    Subdivide Mesh   Apply Loop subdivision to the mesh\n");
+	fprintf(stderr, "    Screencap        Save the current view to an image file\n");
+	fprintf(stderr, "    Exit             Quit the application\n");
 	exit(1);
 }
 
 
 int main(int argc, char *argv[])
 {
+	printf("rtsc: Real-time suggestive contours and other lines\n");
+	printf("Press 'h' on the command line for a full list of options.\n");
+	printf("Common keys:\n");
+	printf("  'q' or ESC: Exit\n");
+	printf("  'SPACE':    Reset view\n");
+	printf("  'S':        Smooth mesh\n");
+	printf("  'V':        Subdivide mesh\n");
+	printf("  'I':        Screencap\n");
+	printf("\n");
+
         int wwid = 820, wht = 700;
         for (int j = 1; j < argc; j++) {
 		if (!strcmp(argv[j], "-h") || !strcmp(argv[j], "--help")) {
@@ -2407,29 +2430,41 @@ int main(int argc, char *argv[])
 	spinner = glui->add_spinner_to_panel(g, "# Topo lines",
 					     GLUI_SPINNER_INT, &ntopo);
 	spinner->set_int_limits(1, 100);
-	spinner->edittext->set_w(120);
-	glui->add_slider_to_panel(g, "Topo offset", GLUI_SLIDER_FLOAT,
-				  -1.0, 1.0, &topo_offset)->set_w(5);
+	spinner->set_w(150);
+	spinner = glui->add_spinner_to_panel(g, "Topo offset",
+					     GLUI_SPINNER_FLOAT, &topo_offset);
+	spinner->set_float_limits(-1.0, 1.0);
+	spinner->set_w(150);
 
 	glui->add_column_to_panel(g, false);
 	glui->add_statictext_to_panel(g, "Line tests:");
 	glui->add_checkbox_to_panel(g, "Draw hidden lines", &draw_hidden);
 	glui->add_checkbox_to_panel(g, "Trim \"inside\" contours", &test_c);
 	glui->add_checkbox_to_panel(g, "Trim SC", &test_sc);
-	glui->add_slider_to_panel(g, "SC thresh", GLUI_SLIDER_FLOAT,
-				  0.0, 0.1, &sug_thresh);
+	spinner = glui->add_spinner_to_panel(g, "SC thresh",
+					     GLUI_SPINNER_FLOAT, &sug_thresh);
+	spinner->set_float_limits(0.0, 0.1);
+	spinner->set_w(150);
 	glui->add_checkbox_to_panel(g, "Trim SH", &test_sh);
-	glui->add_slider_to_panel(g, "SH thresh", GLUI_SLIDER_FLOAT,
-				  0.0, 0.1, &sh_thresh);
+	spinner = glui->add_spinner_to_panel(g, "SH thresh",
+					     GLUI_SPINNER_FLOAT, &sh_thresh);
+	spinner->set_float_limits(0.0, 0.1);
+	spinner->set_w(150);
 	glui->add_checkbox_to_panel(g, "Trim PH", &test_ph);
-	glui->add_slider_to_panel(g, "PH thresh", GLUI_SLIDER_FLOAT,
-				  0.0, 0.2, &ph_thresh);
+	spinner = glui->add_spinner_to_panel(g, "PH thresh",
+					     GLUI_SPINNER_FLOAT, &ph_thresh);
+	spinner->set_float_limits(0.0, 0.2);
+	spinner->set_w(150);
 	glui->add_checkbox_to_panel(g, "Trim RV", &test_rv);
-	glui->add_slider_to_panel(g, "RV thresh", GLUI_SLIDER_FLOAT,
-				  0.0, 0.5, &rv_thresh);
+	spinner = glui->add_spinner_to_panel(g, "RV thresh",
+					     GLUI_SPINNER_FLOAT, &rv_thresh);
+	spinner->set_float_limits(0.0, 0.5);
+	spinner->set_w(150);
 	glui->add_checkbox_to_panel(g, "Trim AR", &test_ar);
-	glui->add_slider_to_panel(g, "AR thresh", GLUI_SLIDER_FLOAT,
-				  0.0, 0.5, &ar_thresh);
+	spinner = glui->add_spinner_to_panel(g, "AR thresh",
+					     GLUI_SPINNER_FLOAT, &ar_thresh);
+	spinner->set_float_limits(0.0, 0.5);
+	spinner->set_w(150);
 
 	glui->add_column_to_panel(g, false);
 	glui->add_statictext_to_panel(g, "Line style:");

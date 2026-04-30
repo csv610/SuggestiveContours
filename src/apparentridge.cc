@@ -14,6 +14,11 @@ Implements method of
 #include <stdio.h>
 #include "TriMesh.h"
 #include "GL/glui.h"
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
 
 using namespace trimesh;
 using namespace std;

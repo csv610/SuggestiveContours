@@ -300,10 +300,10 @@ typename ::std::enable_if< ::std::is_floating_point<T>::value, T >::type
 uniform_rnd(T n)
 {
 	if (n > 0) {
-		const T scale = T(1) / T(::std::numeric_limits<unsigned>::max());
+		const T scale = T(1) / ::std::numeric_limits<unsigned>::max();
 		return T(xorshift_rnd()) * scale * n;
 	} else if (n < 0) {
-		const T scale = T(2) / T(::std::numeric_limits<unsigned>::max());
+		const T scale = T(2) / ::std::numeric_limits<unsigned>::max();
 		return (T(xorshift_rnd()) * scale - T(1)) * n;
 	} else {
 		return 0;
